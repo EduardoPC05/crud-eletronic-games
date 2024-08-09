@@ -12,7 +12,7 @@ public class RatingDto implements ObjectConvert<RatingDto> {
 	private LocalDateTime createdAt;
 	private Long userId;
 	private Long gameId;
-	
+
 	public RatingDto() {
 	}
 
@@ -36,7 +36,7 @@ public class RatingDto implements ObjectConvert<RatingDto> {
 	public int getStars() {
 		return stars;
 	}
-	
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}

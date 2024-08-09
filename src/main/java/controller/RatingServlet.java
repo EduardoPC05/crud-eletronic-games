@@ -28,7 +28,7 @@ public class RatingServlet extends HttpServlet {
 	private final RatingRepository ratingRepository;
 	private final UserRepository userRepository;
 	private final GameRepository gameRepository;
-	
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -45,20 +45,20 @@ public class RatingServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("ratingId");
-		
+
 		PrintWriter pw = response.getWriter();
-		
+
 		if(id == null || id.isEmpty()) {
 			Collection<Rating> ratings = ratingRepository.findAll();
-			
+
 			if(ratings.isEmpty()) {
 				pw.write("[]");
-			}else {				
+			}else {
 				ratings.forEach( rating -> pw.write(rating.toString()) );
 			}
-			
+
 		}else {
-			Rating rating = ratingRepository.find(Long.parseLong(id));
+			Rating rating = ratingRepository.findById(Long.parseLong(id));
 			if(rating == null) {
 				pw.write("NO CONTENT");
 			}else {
@@ -70,7 +70,7 @@ public class RatingServlet extends HttpServlet {
 				pw.write(rating.getGame().getTitle() + "\n");
 			}
 		}
-		
+
 	}
 
 	/**
@@ -83,9 +83,9 @@ public class RatingServlet extends HttpServlet {
 		String createdAt = request.getParameter("createdAt");
 		String userId = request.getParameter("userId");
 		String gameId = request.getParameter("gameId");
-		
+
 		PrintWriter pw = response.getWriter();
-		
+
 		if(description.isEmpty() || stars.isEmpty() || createdAt.isEmpty() || userId.isEmpty() || gameId.isEmpty()) {
 			pw.write("FIELDS CANT BE EMPTY");
 		}else {
@@ -93,15 +93,17 @@ public class RatingServlet extends HttpServlet {
 			rating.setDescription(description);
 			rating.setStars(Integer.parseInt(stars));
 			rating.setCreatedAt(LocalDateTime.parse(createdAt));
-			
-			User user = userRepository.find(Long.parseLong(userId));
-			if(user != null)
+
+			User user = userRepository.findById(Long.parseLong(userId));
+			if(user != null) {
 				rating.setUser(user);
-			
-			Game game = gameRepository.find(Long.parseLong(gameId));
-			if(game != null)
+			}
+
+			Game game = gameRepository.findById(Long.parseLong(gameId));
+			if(game != null) {
 				rating.setGame(game);
-			
+			}
+
 			ratingRepository.save(rating);
 			pw.write("CREATED");
 		}
@@ -110,13 +112,13 @@ public class RatingServlet extends HttpServlet {
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("ratingId");
-		
+
 		PrintWriter pw = response.getWriter();
 
 		if(id == null || id.isEmpty()){
 			pw.write("ID CANT BE EMPTY");
 		}else {
-			ratingRepository.delete(Long.parseLong(id));
+			ratingRepository.deleteById(Long.parseLong(id));
 			pw.write("DELETED");
 		}
 	}

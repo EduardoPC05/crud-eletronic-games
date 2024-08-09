@@ -1,5 +1,7 @@
 package model.entities.User;
 
+import java.security.MessageDigest;
+
 public class User {
 
 	private Long id;
@@ -22,9 +24,28 @@ public class User {
 	public User(String name, String email, String password, UserType type) {
 		this.name = name;
 		this.email = email;
-		this.password = password;
+		setPassword(password);
 		this.type = type;
 	}
+	
+	public static boolean autenticate(User onSystem, String password){
+        return onSystem.password.equals(onSystem.encryptPassword(password));
+    }
+	
+	protected String encryptPassword(String passwd){
+        StringBuilder sb = new StringBuilder();
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(passwd.getBytes());
+            byte[] digest = md.digest();
+            for(byte b : digest){
+                sb.append(String.format("%02x", b & 0xff));
+            }
+        }catch (Exception e){
+            sb = new StringBuilder();
+        }
+        return sb.toString();
+    }
 
 	public Long getId() {
 		return id;
@@ -55,7 +76,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = encryptPassword(password);
 	}
 
 	public UserType getType() {
@@ -65,5 +86,7 @@ public class User {
 	public void setType(UserType type) {
 		this.type = type;
 	}
+	
+	
 
 }

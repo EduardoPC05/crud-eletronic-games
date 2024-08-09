@@ -7,9 +7,9 @@ public class RequirementDto implements ObjectConvert<RequirementDto> {
 	private String component;
 	private String description;
 	private Long gameId;
-	
+
 	public RequirementDto() {}
-	
+
 	public RequirementDto(String component, String description, Long gameId) {
 		this.component = component;
 		this.description = description;

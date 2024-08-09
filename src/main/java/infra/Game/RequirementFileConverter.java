@@ -19,5 +19,5 @@ public class RequirementFileConverter implements FileConvert<RequirementDto> {
 		dataset.forEach( requirement ->  requirementsDto.add(generate(requirement)));
 		return requirementsDto;
 	}
-	
+
 }

@@ -6,9 +6,9 @@ public class PlatformDto implements ObjectConvert<PlatformDto> {
 
 	private String platform;
 	private Long gameId;
-	
+
 	public PlatformDto() {}
-	
+
 	public PlatformDto(String platform, Long gameId) {
 		this.platform = platform;
 		this.gameId = gameId;

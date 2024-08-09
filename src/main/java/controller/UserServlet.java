@@ -45,7 +45,7 @@ public class UserServlet extends HttpServlet {
 			Collection<User> users = userRepository.findAll();
 			users.forEach(user -> pw.write(user.toString() + "\n"));
 		}else {
-			User user = userRepository.find(Long.parseLong(id));
+			User user = userRepository.findById(Long.parseLong(id));
 			if(user == null) {
 				pw.write("NO CONTENT");
 			}else {
@@ -86,7 +86,7 @@ public class UserServlet extends HttpServlet {
 		if(id == null || id.isEmpty()){
 			pw.write("NO CONTENT");
 		}else {
-			userRepository.delete(Long.parseLong(id));
+			userRepository.deleteById(Long.parseLong(id));
 		}
 
 	}

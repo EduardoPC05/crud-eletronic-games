@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +51,7 @@ public class GameServlet extends HttpServlet {
 			Collection<Game> games = gameRepository.findAll();
 			games.forEach(game -> pw.write(game.toString() + "\n"));
 		}else {
-			Game game = gameRepository.find(Long.parseLong(id));
+			Game game = gameRepository.findById(Long.parseLong(id));
 			if(game == null) {
 				pw.write("NO CONTENT");
 			}else {
@@ -62,7 +61,7 @@ public class GameServlet extends HttpServlet {
 				pw.write(game.getRelease() + "\n");
 				pw.write(game.getSynopsis() + "\n");
 				for(Map.Entry<String, String> entry : game.getRequirement().entrySet()) {
-					pw.write(entry.getKey() + ":" + entry.getValue() + "\n");	
+					pw.write(entry.getKey() + ":" + entry.getValue() + "\n");
 				}
 				for(String plat : game.getPlatform()) {
 					pw.write(plat + "\n");
@@ -83,7 +82,7 @@ public class GameServlet extends HttpServlet {
 		String categoryId = request.getParameter("categoryId");
 		String requirementNotMapped = request.getParameter("requirement");
 		String platformNotMapped = request.getParameter("platform");
-	
+
 		PrintWriter pw = response.getWriter();
 
 		if(title.isEmpty() || publisher.isEmpty() || release.isEmpty() || synopsis.isEmpty() || categoryId.isEmpty() || requirementNotMapped.isEmpty() || platformNotMapped.isEmpty()) {
@@ -94,25 +93,25 @@ public class GameServlet extends HttpServlet {
 			game.setPublisher(publisher);
 			game.setRelease(LocalDateTime.parse(release));
 			game.setSynopsis(synopsis);
-			
+
 			Map<String, String> requirement = new HashMap<>();
 			String[] lines = requirementNotMapped.split("\n");
 			for(String line : lines) {
 				String[] tuples = line.split(";");
 				requirement.put(tuples[0], tuples[1]);
 			}
-			
+
 			game.setRequirement(requirement);
-			
+
 			Collection<String> platform = new ArrayList<>();
 			String[] values = platformNotMapped.split(";");
 			for(String value : values) {
 				platform.add(value);
 			}
-			
+
 			game.setPlatform(platform);
 
-			Category category = categoryRepository.find(Long.parseLong(categoryId));
+			Category category = categoryRepository.findById(Long.parseLong(categoryId));
 
 			if(category != null) {
 				game.setCategory(category);
@@ -132,10 +131,10 @@ public class GameServlet extends HttpServlet {
 		if(id == null || id.isEmpty()){
 			pw.write("ID CANT BE EMPTY");
 		}else {
-			gameRepository.delete(Long.parseLong(id));
+			gameRepository.deleteById(Long.parseLong(id));
 		}
 	}
 
-	
+
 
 }

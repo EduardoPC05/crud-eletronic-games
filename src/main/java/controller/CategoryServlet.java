@@ -45,7 +45,7 @@ public class CategoryServlet extends HttpServlet {
 			Collection<Category> categories = categoryRepository.findAll();
 			categories.forEach( category -> pw.write(category.toString() + "\n") );
 		}else {
-			Category category = categoryRepository.find(Long.parseLong(id));
+			Category category = categoryRepository.findById(Long.parseLong(id));
 			if(category == null) {
 				pw.write("NO CONTENT");
 			}else {
@@ -82,7 +82,7 @@ public class CategoryServlet extends HttpServlet {
 		if(id == null || id.isEmpty()){
 			pw.write("ID CANT BE EMPTY");
 		}else {
-			categoryRepository.delete(Long.parseLong(id));
+			categoryRepository.deleteById(Long.parseLong(id));
 		}
 	}
 
